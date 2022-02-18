@@ -1,0 +1,7 @@
+[
+  ["Income", "Bills", 3],
+  ["Income", "Saving", 2],
+  ["Saving", "Fund", 2],
+  ["Bills", "Electric Bill", 2],
+  ["Bills", "Mobile Bill", 1]
+]
