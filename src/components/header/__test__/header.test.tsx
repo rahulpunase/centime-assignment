@@ -14,21 +14,23 @@ const render = (component: ReactNode) => rtlRender(
 );
 
 describe('Header Component should', () => {
+	let wrapper: any;
+	beforeEach(() => {
+		wrapper = render(<HeaderComponent/>);
+	})
 	it(' renders correctly', () => {
-		render(<HeaderComponent/>);
+		expect(wrapper).not.toBeNull();
 	});
 
 	it (' have Centime logo', () => {
-		render(<HeaderComponent/>);
-		const logo = screen.getByAltText('centime-logo');
+		const logo = wrapper.getByAltText('centime-logo');
 		expect(logo).toBeInTheDocument();
 		expect(logo).toHaveAttribute('src', 'https://uploads-ssl.webflow.com/615f40af7a135839ad16cf09/615f40af7a1358d94716cf4e_logo2.svg');
 	});
 
 	it(' should work on onChange', () => {
-		render(<HeaderComponent />)
-		const languageLabel = screen.getByText(/Change Language:/i);
-		const select = screen.getByTestId('change-language');
+		const languageLabel = wrapper.getByText(/Change Language:/i);
+		const select = wrapper.getByTestId('change-language');
 		fireEvent.change(select, { target: { value: 'de-de' } });
 		expect(languageLabel).toHaveTextContent('Sprache ändern:');
 	})

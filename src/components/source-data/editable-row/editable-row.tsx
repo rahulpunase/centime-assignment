@@ -49,7 +49,7 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler}: IEditableColum
 	}, []);
 	return (
 		<React.Fragment>
-			{!!rowIndex && <tr className='editable-row__component'>
+			{!!rowIndex && <tr className='editable-row__component' data-testid='editable-row'>
 				{rowData.map((columnData, index) => {
 					return (<td key={index}>
 						{!isEditModeActive && <div>{columnData}</div>}
@@ -59,9 +59,9 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler}: IEditableColum
 				})}
 				<td className='actions'>
 					{!isEditModeActive && <button data-testid='edit' onClick={onEditHandler} className='btn btn-sm btn-primary'>{translate('Edit')}</button>}
-					{isEditModeActive && <button onClick={() => onCancelHandler(rowIndex)} className='btn btn-sm btn-danger'>{translate('Cancel')}</button>}
-					{!isEditModeActive && <button className='btn btn-sm btn-danger' onClick={() => onDeleteRowHandler(rowIndex)}>{translate('Delete')}</button>}
-					{isEditModeActive && <button className='btn btn-sm btn-success' onClick={() => onSaveHandler(rowIndex)}>{translate('Save')}</button>}
+					{isEditModeActive && <button data-testid='cancel' onClick={() => onCancelHandler(rowIndex)} className='btn btn-sm btn-danger'>{translate('Cancel')}</button>}
+					{!isEditModeActive && <button data-testid='delete' className='btn btn-sm btn-danger' onClick={() => onDeleteRowHandler(rowIndex)}>{translate('Delete')}</button>}
+					{isEditModeActive && <button data-testid='save' className='btn btn-sm btn-success' onClick={() => onSaveHandler(rowIndex)}>{translate('Save')}</button>}
 				</td>
 			</tr>}
 		</React.Fragment>

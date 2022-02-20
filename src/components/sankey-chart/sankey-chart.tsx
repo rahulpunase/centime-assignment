@@ -14,14 +14,17 @@ const SankeyChartComponent = (props: ISankeyChartComponent) => {
 	return (
 		<div className='sankey-chart__component'>
 			<h2 data-testid='heading' className='heading'>{translate(props.heading)}</h2>
-			<Chart
-				data-testid='chart-component'
-				chartType='Sankey'
-				width='100%'
-				height='300px'
-				data={sankey.dataStore}
-				options={props.options}
-			/>
+			<div className="chart-holder">
+				{!sankey.dataLoaded && <div className="loading">Loading data...</div>}
+				{sankey.dataLoaded && <Chart
+					chartType='Sankey'
+					width='100%'
+					height='300px'
+					data={sankey.dataStore}
+					options={props.options}
+					loader={<p>Loading</p>}
+				/>}
+			</div>
 		</div>
 	);
 };

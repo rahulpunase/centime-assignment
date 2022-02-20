@@ -2,10 +2,12 @@ import {ADD_SANKEY_DATA, DELETE_SANKEY_DATA, UPDATE_SANKEY_DATA} from "./sankey-
 
 export interface ISankeyDataReducer {
 	dataStore: Array<Array<string | number>>;
+	dataLoaded: boolean;
 }
 
 const defaultState: ISankeyDataReducer = {
-	dataStore: [["From", "To", "Weight"]]
+	dataStore: [["From", "To", "Weight"]],
+	dataLoaded: false
 }
 const SankeyDataReducer = (state: ISankeyDataReducer = defaultState, action: any): ISankeyDataReducer => {
 	switch (action.type) {
@@ -14,7 +16,8 @@ const SankeyDataReducer = (state: ISankeyDataReducer = defaultState, action: any
 			const newData = [...dataStore, ...action.payload];
 			return {
 				...state,
-				dataStore: newData
+				dataStore: newData,
+				dataLoaded: true
 			}
 		}
 		case UPDATE_SANKEY_DATA: {

@@ -12,19 +12,24 @@ function App() {
 	let timer: any = null;
 	const dispatch = useDispatch();
 
-	useEffect(() => {
+	const mockApiCall = () => {
 		timer = setTimeout(function() {
 			dispatch(addSankeyData(mockData));
-		}, 2000);
+		}, 500);
+	}
+
+	useEffect(() => {
+		// mocking api call
+		mockApiCall();
 		return () => clearTimeout(timer);
-	});
+	}, []);
 
 	const options: ChartWrapperOptions['options'] = {
 		title: 'Expenditure Chart',
 		sankey: {
 			node: { colors: [ '#0d6efd' ] },
 			link: { color: { stroke: 'black', strokeWidth: 1 } },
-		}
+		},
 	};
 
 	return (

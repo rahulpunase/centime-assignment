@@ -1,17 +1,10 @@
 import React, {ReactNode} from 'react';
-import {render as rtlRender, screen} from "@testing-library/react";
-import SankeyChartComponent, {ISankeyChartComponent} from "./../sankey-chart";
-import store from "../../../store/store";
-import {Provider} from "react-redux";
-import {I18nProvider} from "../../../i18n/i18n.provider";
+import {render, RenderResult, screen} from '@testing-library/react';
+import SankeyChartComponent, {ISankeyChartComponent} from './../sankey-chart';
+import store from '../../../store/store';
+import {Provider, shallowEqual} from 'react-redux';
+import {I18nProvider} from '../../../i18n/i18n.provider';
 
-const render = (component: ReactNode) => rtlRender(
-	<Provider store={store}>
-		<I18nProvider>
-			{component}
-		</I18nProvider>
-	</Provider>
-);
 
 const mockProps: ISankeyChartComponent = {
 	options: {},
@@ -19,13 +12,26 @@ const mockProps: ISankeyChartComponent = {
 }
 
 describe('Sankey Chart Component should', () => {
+	let wrapper: RenderResult;
+	beforeEach(() => {
+		wrapper = render(<Provider store={store}>
+			<I18nProvider>
+				<SankeyChartComponent {...mockProps} />
+			</I18nProvider>
+		</Provider>)
+	});
+
 	it('render correctly', () => {
-		render(<SankeyChartComponent {...mockProps} />);
+		expect(wrapper).not.toBeNull();
+	});
+
+	it('should have loading text', () => {
+		const loadingElement = wrapper.getByText(/Loading Data.../i);
+		expect(loadingElement).toBeInTheDocument();
 	});
 
 	it('should have heading', () => {
-		render(<SankeyChartComponent {...mockProps} />);
-		const h2 = screen.getByTestId('heading');
+		const h2 = wrapper.getByTestId('heading');
 		expect(h2).toHaveTextContent(mockProps.heading);
 	});
 });
