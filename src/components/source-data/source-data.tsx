@@ -3,11 +3,11 @@ import './source-data.scss'
 import {useSelector} from "react-redux";
 import {IStore} from "../../store/store";
 import EditableRow from "./editable-row/editable-row";
+import {translate} from "../../i18n/translate";
 
 const SourceDataComponent = () => {
 	const sankey = useSelector((store: IStore) => store.sankeyReducer);
 	const [tableData, setTableData] = useState(sankey.dataStore);
-
 	useEffect(() => {
 		setTableData(sankey.dataStore);
 	}, [sankey.dataStore]);
@@ -26,16 +26,17 @@ const SourceDataComponent = () => {
 
 	return (
 		<div className='source-data__component'>
-			<table className='table'>
+			<table className='table' data-testid='content-table'>
 				<thead>
 				<tr>
-					{tableData[0].map(heading => <th key={heading}>{heading}</th>)}
-					<th/>
+					{tableData[0].map(heading => <th data-testid='c-head-row' key={heading}>{translate(heading)}</th>)}
 				</tr>
 				</thead>
 				<tbody>
 				{
 					tableData.map((rowData, index) => <EditableRow
+						data-testid='editable-row'
+						key={index}
 						defaultData={rowData}
 						rowIndex={index}
 						deleteEntryHandler={deleteEntryHandler}
@@ -43,7 +44,7 @@ const SourceDataComponent = () => {
 				}
 				<tr>
 					<td colSpan={4}>
-						<button onClick={addEntryHandler} className="btn btn-primary">Add Entry</button>
+						<button data-testid='add-entry-button' onClick={addEntryHandler} disabled={tableData.length === 1} className="btn btn-primary">{translate('Add Entry')}</button>
 					</td>
 				</tr>
 				</tbody>

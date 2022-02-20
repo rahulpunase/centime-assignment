@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import './editable-row.scss';
-import {useDispatch} from "react-redux";
-import {updateSankeyData} from "../../../store/reducers/sankey-data/sankey-data.action";
+import {useDispatch} from 'react-redux';
+import {deleteSankeyData, updateSankeyData} from '../../../store/reducers/sankey-data/sankey-data.action';
+import {translate} from "../../../i18n/translate";
 
 export interface IEditableColumn {
 	defaultData: Array<string | number>;
@@ -12,7 +13,6 @@ export interface IEditableColumn {
 const EditableRow = ({defaultData, rowIndex, deleteEntryHandler}: IEditableColumn) => {
 	const [isEditModeActive, setIsEditMode] = useState(false);
 	const [rowData, setRowData] = useState(defaultData);
-	const [isAvailableToSave, setIsAvailableToSave] = useState(false);
 	const dispatch = useDispatch();
 	const onEditHandler = () => {
 		setIsEditMode(true)
@@ -20,14 +20,14 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler}: IEditableColum
 	const onCancelHandler = (rowIndex: number) => {
 		if (!rowData.join('')) {
 			deleteEntryHandler(rowIndex);
-		} else {
-			// delete reducer entry
 		}
 		setIsEditMode(false);
 
 	}
-	const onDeleteRowHandler = () => {
-
+	const onDeleteRowHandler = (rowIndex: number) => {
+		dispatch(deleteSankeyData({
+			index: rowIndex
+		}))
 	}
 	const onSaveHandler = (rowIndex: number) => {
 		setIsEditMode(false);
@@ -51,16 +51,17 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler}: IEditableColum
 		<React.Fragment>
 			{!!rowIndex && <tr className='editable-row__component'>
 				{rowData.map((columnData, index) => {
-					return (<td>
+					return (<td key={index}>
 						{!isEditModeActive && <div>{columnData}</div>}
-						{isEditModeActive && <input className='form-control' onChange={(event) => onInputChangeHandler(event, index)} value={columnData} type="text"/>}
+						{isEditModeActive &&
+							<input className='form-control'onChange={(event) => onInputChangeHandler(event, index)} value={columnData} type='text'/>}
 					</td>)
 				})}
 				<td className='actions'>
-					{!isEditModeActive && <button onClick={onEditHandler} className='btn btn-sm btn-primary'>Edit</button>}
-					{isEditModeActive && <button onClick={() => onCancelHandler(rowIndex)} className='btn btn-sm btn-danger'>Cancel</button>}
-					{!isEditModeActive && <button className='btn btn-sm btn-danger' onClick={onDeleteRowHandler}>Delete</button>}
-					{isEditModeActive && <button className='btn btn-sm btn-success' onClick={() => onSaveHandler(rowIndex)}>Save</button>}
+					{!isEditModeActive && <button data-testid='edit' onClick={onEditHandler} className='btn btn-sm btn-primary'>{translate('Edit')}</button>}
+					{isEditModeActive && <button onClick={() => onCancelHandler(rowIndex)} className='btn btn-sm btn-danger'>{translate('Cancel')}</button>}
+					{!isEditModeActive && <button className='btn btn-sm btn-danger' onClick={() => onDeleteRowHandler(rowIndex)}>{translate('Delete')}</button>}
+					{isEditModeActive && <button className='btn btn-sm btn-success' onClick={() => onSaveHandler(rowIndex)}>{translate('Save')}</button>}
 				</td>
 			</tr>}
 		</React.Fragment>
