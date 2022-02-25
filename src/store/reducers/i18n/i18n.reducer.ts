@@ -5,7 +5,7 @@ export interface II18nReducer {
 	selectedLanguage: TLanguage;
 }
 
-const defaultState: II18nReducer = {
+export const defaultState: II18nReducer = {
 	selectedLanguage: "en-us"
 }
 const I18nReducer = (state: II18nReducer = defaultState, action: any): II18nReducer => {

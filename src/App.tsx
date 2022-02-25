@@ -9,26 +9,21 @@ import SourceDataComponent from './components/source-data/source-data';
 import {ChartWrapperOptions} from 'react-google-charts';
 
 function App() {
-	let timer: any = null;
 	const dispatch = useDispatch();
-
-	const mockApiCall = () => {
-		timer = setTimeout(function() {
-			dispatch(addSankeyData(mockData));
-		}, 500);
-	}
 
 	useEffect(() => {
 		// mocking api call
-		mockApiCall();
+		let timer = setTimeout(function () {
+			dispatch(addSankeyData(mockData));
+		}, 500);
 		return () => clearTimeout(timer);
 	}, []);
 
 	const options: ChartWrapperOptions['options'] = {
 		title: 'Expenditure Chart',
 		sankey: {
-			node: { colors: [ '#0d6efd' ] },
-			link: { color: { stroke: 'black', strokeWidth: 1 } },
+			node: {colors: ['#0d6efd']},
+			link: {color: {stroke: 'black', strokeWidth: 1}},
 		},
 	};
 

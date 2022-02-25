@@ -5,37 +5,34 @@ export interface ISankeyDataReducer {
 	dataLoaded: boolean;
 }
 
-const defaultState: ISankeyDataReducer = {
+export const defaultState: ISankeyDataReducer = {
 	dataStore: [["From", "To", "Weight"]],
 	dataLoaded: false
 }
 const SankeyDataReducer = (state: ISankeyDataReducer = defaultState, action: any): ISankeyDataReducer => {
 	switch (action.type) {
 		case ADD_SANKEY_DATA: {
-			const dataStore = state.dataStore;
-			const newData = [...dataStore, ...action.payload];
+			const dataStore = [...state.dataStore];
 			return {
 				...state,
-				dataStore: newData,
+				dataStore: [...dataStore, ...action.payload],
 				dataLoaded: true
 			}
 		}
 		case UPDATE_SANKEY_DATA: {
-			const dataStore = state.dataStore;
+			const dataStore = [...state.dataStore];
 			dataStore.splice(action.payload.index, 1, action.payload.newRow);
-			const newData = [...dataStore];
 			return {
 				...state,
-				dataStore: newData
+				dataStore: dataStore
 			}
 		}
 		case DELETE_SANKEY_DATA: {
-			const dataStore = state.dataStore;
+			const dataStore = [...state.dataStore];
 			dataStore.splice(action.payload.index, 1);
-			const newData = [...dataStore];
 			return {
 				...state,
-				dataStore: newData
+				dataStore: dataStore
 			}
 		}
 		default:
