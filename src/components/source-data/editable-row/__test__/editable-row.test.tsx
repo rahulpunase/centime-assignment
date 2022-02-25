@@ -3,7 +3,6 @@ import {render, RenderResult, fireEvent} from '@testing-library/react';
 import * as redux from "react-redux";
 import {I18nProvider} from '../../../../i18n/i18n.provider';
 import EditableRow from '../editable-row';
-import configureStore from 'redux-mock-store'
 import store from "../../../../store/store";
 
 

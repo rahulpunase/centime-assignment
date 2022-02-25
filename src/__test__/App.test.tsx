@@ -16,8 +16,4 @@ describe('App component should', () => {
 			</Provider>,
 		);
 	});
-
-	// it('should  call the dispatch', function () {
-	// 	expect(dispatch).toHaveBeenCalled();
-	// });
 });
