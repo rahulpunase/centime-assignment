@@ -10,7 +10,7 @@ const SourceDataComponent = () => {
 	const [tableData, setTableData] = useState(sankey.dataStore);
 	const [isEditingRow, setIsEditingRow] = useState(-1);
 	useEffect(() => {
-		setTableData(sankey.dataStore);
+		setTableData([...sankey.dataStore]);
 	}, [sankey.dataStore]);
 
 	const addEntryHandler = () => {
@@ -42,7 +42,7 @@ const SourceDataComponent = () => {
 				<tbody>
 				{
 					tableData.map((rowData, index) => <EditableRow
-						key={index}
+						key={JSON.stringify(rowData)}
 						defaultData={rowData}
 						rowIndex={index}
 						deleteEntryHandler={deleteEntryHandler}

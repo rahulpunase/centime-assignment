@@ -16,6 +16,7 @@ export interface IEditableRow {
 const EditableRow = ({defaultData, rowIndex, deleteEntryHandler, setIsEditingRow, disableEdit}: IEditableRow) => {
 	const [isEditModeActive, setIsEditMode] = useState(false);
 	const [rowData, setRowData] = useState(defaultData);
+	const [prevData, setPrevData] = useState<Array<any> | null>(null);
 	const sankeyDataReducer = useSelector((store: IStore) => store.sankeyReducer);
 	const shouldSaveDisable = rowData.includes('');
 
@@ -25,17 +26,22 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler, setIsEditingRow
 		if (!rowData.join('')) {
 			setIsEditMode(true);
 		}
-		setIsEditingRow(isEditModeActive ? rowIndex : -1);
-	}, [isEditModeActive]);
+	}, []);
 
 	const onEditHandler = () => {
-		setIsEditMode(true);
+		setEditingModeTo(true, rowIndex);
+		setPrevData(defaultData);
 	}
 	const onCancelHandler = (rowIndex: number) => {
-		if (!rowData.join('')) {
+		if (rowIndex >= sankeyDataReducer.dataStore.length) {
 			deleteEntryHandler(rowIndex);
 		}
-		setIsEditMode(false);
+		if (prevData) {
+			setRowData(prevData);
+			setPrevData(null);
+		}
+		setEditingModeTo(false, -1);
+
 	}
 	const onDeleteRowHandler = (rowIndex: number) => {
 		dispatch(deleteSankeyData({
@@ -53,8 +59,7 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler, setIsEditingRow
 				index: rowIndex,
 				newRow: rowData
 			}));
-			setIsEditMode(false);
-			// setIsEditingRow(-1);
+			setEditingModeTo(false, -1);
 		}
 	}
 
@@ -62,6 +67,11 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler, setIsEditingRow
 		const data = [...rowData];
 		data[index] = event.currentTarget.value;
 		setRowData(data);
+	}
+
+	const setEditingModeTo = (bool: boolean, rowIndex: number): void => {
+		setIsEditMode(bool);
+		setIsEditingRow(rowIndex);
 	}
 
 	return (
