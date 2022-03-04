@@ -79,9 +79,9 @@ const EditableRow = ({defaultData, rowIndex, deleteEntryHandler, setIsEditingRow
 			{!!rowIndex && <tr className='editable-row__component' data-testid='editable-row'>
 				{rowData.map((columnData, index) => {
 					return (<td key={index}>
-						{!isEditModeActive && <div>{columnData}</div>}
+						{!isEditModeActive && <div data-testid="column-data">{columnData}</div>}
 						{isEditModeActive &&
-							<input className='form-control'onChange={(event) => onInputChangeHandler(event, index)} value={columnData} type='text'/>}
+							<input data-testid="form-input" className='form-control'onChange={(event) => onInputChangeHandler(event, index)} value={columnData} type='text'/>}
 					</td>)
 				})}
 				<td className='actions'>
